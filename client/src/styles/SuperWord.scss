@@ -1,0 +1,17 @@
+$green: #55EFC4;
+$red: #D63031;
+.SuperWord {
+    color: $red;
+    position: relative;
+    text-shadow: 0px 4px 0 white;
+    &::before {
+        content: '';
+        background-color: #55EFC4;
+        position: absolute;
+        width: 100%;
+        border-radius: 25px;
+        height: 40%;
+        bottom: 0;
+        z-index: -1;
+    }
+}
