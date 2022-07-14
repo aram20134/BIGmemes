@@ -8,7 +8,6 @@ import { observer } from 'mobx-react-lite';
 import { Context } from './../index';
 
 const Navbar = observer(() => {
-    console.log(localStorage.getItem('token'))
     const [IsMenuOpen, setIsMenuOpen] = useState(true)
     const [show, setShow] = useState(false);
     const {user} = useContext(Context)

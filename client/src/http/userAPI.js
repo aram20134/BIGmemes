@@ -41,3 +41,11 @@ export const getUserId = async (id) => {
     })
     return data
 }
+
+export const changeUserName = async (id, name) => {
+    const {data} = await $authHost.post('api/user/changeusername', {
+        id,
+        name
+    })
+    return data
+}

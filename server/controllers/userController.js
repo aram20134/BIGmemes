@@ -58,7 +58,8 @@ class UserController {
     }
 
     async check (req, res, next) {
-        const token = signJWT(req.user.id, req.user.email, req.user.name, req.user.avatar)
+        const user = await User.findOne({where:{id: req.user.id}})
+        const token = signJWT(req.user.id, user.email, user.name, user.avatar)
         return res.json({token})
     }
 
@@ -85,6 +86,16 @@ class UserController {
         try {
             const {name} = req.query
             const user = await User.findOne({where: {name}})
+            return res.json({user})
+        } catch (e) {
+            next(ApiError.badRequest(e.message))
+        }
+    }
+
+    async changeUserName (req, res, next) {
+        try {
+            const {name, id} = req.body
+            const user = await User.update({name}, {where: {id}})
             return res.json({user})
         } catch (e) {
             next(ApiError.badRequest(e.message))
