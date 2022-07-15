@@ -101,11 +101,9 @@
             width: 100%;
             flex-direction: column;
             transition: all 0.4s ease;
-            // background-color: rgb(0, 223, 230);
             &.active {
                 padding: 15px;
                 max-height:500px;
-                height: auto;
             }
         }
     }

@@ -81,14 +81,14 @@ const Meme = observer(({mem}) => {
         <div className='Memes__comms'>
             <NavLink to={`../profile/${usr.name}`} className='Memes__comms__user'><img className='Memes__comms__user__img' src={`${process.env.REACT_APP_API_URL}/${usr.avatar}`} />{usr.name}</NavLink>
             <div className='Memes__comms2'>
-                <div onClick={() => showComments()} className='Memes__comms2__comments' style={{textDecoration:'none'}} >
+                <div onClick={() => isCom ? setIsCom(!isCom) : showComments()} className='Memes__comms2__comments' style={{textDecoration:'none'}} >
                     {comCount}
                     <img src={comment} />
                 </div>
                 <div className='Memes__comms2__likes'>{likes}<img onClick={like} src={isLiked ? likeOn : likeOff} /></div>
             </div>
         </div>
-        <div onClick={(e)=> e.stopPropagation()} className={`${isCom ? 'Memes__comms2__com_section active' : 'Memes__comms2__com_section'}`}>
+        <div onClick={(e)=> {e.stopPropagation(); e.preventDefault()}} className={`${isCom ? 'Memes__comms2__com_section active' : 'Memes__comms2__com_section'}`}>
             <div style={{fontSize:'20px', fontWeight:'bold'}}>{com.length} comments on meme</div>
             {com.length
             ? (
