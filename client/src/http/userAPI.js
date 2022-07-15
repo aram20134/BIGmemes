@@ -49,3 +49,12 @@ export const changeUserName = async (id, name) => {
     })
     return data
 }
+
+export const writeComment = async (text, userId, theMemeId) => {
+    const {data} = await $authHost.post('api/comment', {
+        text,
+        userId,
+        theMemeId
+    })
+    return data
+}
