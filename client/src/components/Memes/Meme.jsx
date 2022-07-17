@@ -60,12 +60,11 @@ const Meme = observer(({mem}) => {
         setIsCom(!isCom)
         setCom([])
         mems.comments.length 
-        ? mems.comments.map(async comment => await getUserId(comment.userId).then(us => setCom(prev => [...prev, {user:us.user, comment}])))
-        : console.log('first')
+        && mems.comments.map(async comment => await getUserId(comment.userId).then(us => setCom(prev => [...prev, {user:us.user, comment}])))
     }
     function addComment(event) {
         setWantCom(!wantCom)
-        writeComment(textWantCom, user.user.id, mems.id).then(res => setCom(prev => [...prev, {user:toJS(user.user), comment: res}])).finally(setComCount(prev => prev + 1))
+        writeComment(textWantCom, user.user.id, mems.id).then(res => {setCom(prev => [...prev, {user:toJS(user.user), comment: res}]); getOne(mems.id).then(res => setMems(res.meme))}).finally(setComCount(prev => prev + 1))
         setTextWantCom('')
     }
 
