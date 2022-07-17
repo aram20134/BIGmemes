@@ -6,7 +6,10 @@ module.exports = new sequelize (
     process.env.DB_PASSWORD,
     {
         dialect: 'postgres',
+        dialectOptions: {
+            timezone: '+06:00',
+        },
+        timezone: '+06:00',
         host: process.env.DB_HOST,
-        port: process.env.DB_PORT
-    }
-)
+        port: process.env.DB_PORT,
+    })

@@ -15,6 +15,9 @@ import { getUserId, writeComment } from '../../http/userAPI';
 import checkG from '../../static/check.png'
 import cancel from '../../static/cancel.png'
 import { toJS } from 'mobx';
+import { Modal } from 'react-bootstrap';
+import { Alert } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 const Meme = observer(({mem}) => {
     const {user} = useContext(Context)
@@ -29,6 +32,7 @@ const Meme = observer(({mem}) => {
     const [com, setCom] = useState([])
     const [wantCom, setWantCom] = useState(true)
     const [textWantCom, setTextWantCom] = useState('')
+    const [show, setShow] = useState(false)
 
     function checkLike(res) {
         setMems(res.meme);setUsr(res.user);setLoad(true);setLikes(res.meme.rate.length);setComCount(res.meme.comments.length)
@@ -42,8 +46,9 @@ const Meme = observer(({mem}) => {
         : setIsLiked(false);
     }
     function like() {
+        if(!user.isAuth) return (setShow(true))
         try {
-            isLiked 
+            isLiked
             ? delLike(user.user.id, mems.id).then(setIsLiked(false), setLikes(likes - 1))
             : addLike(user.user.id, mems.id).then(setIsLiked(true), setLikes(likes + 1))
         } catch (e) {
@@ -75,7 +80,7 @@ const Meme = observer(({mem}) => {
 
     return (
       <div key={mems.id} className='Memes__cont'>
-      {console.log(mems)}
+      {!user.isAuth && (<Modal show={show} onHide={() => setShow(!show)} centered><Alert style={{margin:'0'}} variant='danger'>Register First!</Alert><Modal.Footer><Button onClick={() => setShow(!show)}>OK</Button></Modal.Footer></Modal>)}
         <div className='Memes__title'>{mems.title ? mems.title : mems.img}</div>
         {mems.img.split('.').pop() == 'mp4' ? (<video className='Memes__cont__vd' src={`${process.env.REACT_APP_API_URL}/${mems.img}`} controls></video>) : (<img className='Memes__cont__img' src={`${process.env.REACT_APP_API_URL}/${mems.img}`} controls></img>)}
         <div className='Memes__comms'>
@@ -107,9 +112,9 @@ const Meme = observer(({mem}) => {
                     </div>)
                 })
             )
-            : 'comments not founded, be first!'}
+            : user.isAuth && 'comments not founded, be first!'}
             {wantCom 
-            ? (<button onClick={() => setWantCom(!wantCom)} className='Navbar__signIn' style={{alignSelf:'flex-start', fontSize:'18px',lineHeight:'24px'}}>Write a comment</button>)
+            ? (user.isAuth ? <button onClick={() => setWantCom(!wantCom)} className='Navbar__signIn' style={{alignSelf:'flex-start', fontSize:'18px',lineHeight:'24px'}}>Write a comment</button> : 'Register to leave a comment')
             : 
             (   
                 <div className='Memes__writeCom'>

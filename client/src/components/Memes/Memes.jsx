@@ -7,11 +7,14 @@ const Memes = observer(({memes}) => {
 
   return (
     <div className='Memes'>
-    {memes.map(mem => {
+    {memes.length
+    ? memes.map(mem => {
       return (
         <Meme key={mem.id} mem={mem} />
       )
-    })}
+    })
+    : (<div style={{fontSize:'52px', fontWeight:'bold'}}>There are no memes :( </div>)
+    }
     </div> 
   )
 })

@@ -14,6 +14,7 @@ import change from '../static/change.png'
 import ProfileModal from '../components/UI/ProfileModal';
 import checkG from '../static/check.png'
 import cancel from '../static/cancel.png'
+import Error from './Error';
 
 const Profile = observer(() => {
   const { meme, user } = useContext(Context);
@@ -39,7 +40,8 @@ const Profile = observer(() => {
   }
 
   useEffect(() => {
-    getAllUser(user.user.id).then((data) => user.setUserMemes(data));
+    console.log(user)
+    user.isAuth && getAllUser(user.user.id).then((data) => user.setUserMemes(data))
     try {
       getUserName(params.username).then((res) => {
         if (res.user == null) {
@@ -50,9 +52,8 @@ const Profile = observer(() => {
             setOwned(true) 
             setLoad(true)
           } else {
-            setOwned(false)
-            setUserData(res)
-            getAllUser(res.user.id).then(a => {setUserMemes(a); setLoad(true)})
+            getAllUser(res.user.id).then(a => {setUserMemes(a); setLoad(true);setOwned(false)})
+            setUserData(res);
           }
           setError(false);
           
@@ -65,6 +66,9 @@ const Profile = observer(() => {
 
   if (!load) {
     return <Spinner animation="border" />;
+  }
+  if (error) {
+    return <Error />;
   }
 
 
@@ -109,7 +113,7 @@ const Profile = observer(() => {
           </div>
           <div className="Profile__user__about">
             <p>{userData.user.name}</p>
-            <p>Memes made: {userMemes.length}</p>
+            <p>Memes made: {userMemes ? userMemes.length : 0}</p>
           </div>
       </div>
       <Memes memes={userMemes} />
