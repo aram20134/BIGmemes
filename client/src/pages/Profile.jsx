@@ -5,16 +5,19 @@ import { useContext } from "react";
 import { Context } from "./../index";
 import { observer } from "mobx-react-lite";
 import { toJS } from "mobx";
-import { Navigate, useParams, useNavigate } from "react-router-dom";
+import { NavLink, useParams, useNavigate } from "react-router-dom";
 import { changeUserName, check, getUserName } from "./../http/userAPI";
 import "../styles/Profile.scss";
-import { Spinner } from 'react-bootstrap';
+import { OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap';
 import Memes from "../components/Memes/Memes";
 import change from '../static/change.png'
-import ProfileModal from '../components/UI/ProfileModal';
+import AddMemeModal from '../components/UI/AddMemeModal';
 import checkG from '../static/check.png'
 import cancel from '../static/cancel.png'
 import Error from './Error';
+import logout from '../static/logout.png'
+import LoadingPage from "../components/UI/LoadingPage";
+import AvatarEditor from 'react-avatar-editor'
 
 const Profile = observer(() => {
   const { meme, user } = useContext(Context);
@@ -30,17 +33,24 @@ const Profile = observer(() => {
   const [userData, setUserData] = useState({});
   const [userMemes, setUserMemes] = useState();
 
+  const [test, setTest] = useState(1)
+
   const params = useParams();
+
+  function logoutUser() {
+    localStorage.removeItem('token')
+    user.setUser(null)
+    user.setIsAuth(false)
+  }
 
   function changeName() {
     changeUserName(user.user.id, changed).then((res) => {check()
-    .then(data => {user.setUser(data);user.setIsAuth(true)})})
+    .then(data => {user.setUser(data);user.setIsAuth(true);setError(false)})})
     .finally(navigate('../profile/' + changed))
     setIsChange(false)
   }
 
   useEffect(() => {
-    console.log(user)
     user.isAuth && getAllUser(user.user.id).then((data) => user.setUserMemes(data))
     try {
       getUserName(params.username).then((res) => {
@@ -65,12 +75,11 @@ const Profile = observer(() => {
   }, [params, changed]);
 
   if (!load) {
-    return <Spinner animation="border" />;
+    return <LoadingPage />;
   }
   if (error) {
     return <Error />;
   }
-
 
   return owned ? (
     <div className="Profile">
@@ -82,7 +91,13 @@ const Profile = observer(() => {
           </div>
           <div className="Profile__user__about">
           {!isChange 
-          ? (<p>{toJS(user.user.name)}<img style={{cursor:'pointer'}} onClick={() => setIsChange(true)} src={change} /></p>)
+          ? (
+            <p>{toJS(user.user.name)}
+              <OverlayTrigger placement="top" overlay={<Tooltip style={{position:'absolute'}}>change your name</Tooltip>}>
+                <img style={{cursor:'pointer'}} onClick={() => setIsChange(true)} src={change} />
+              </OverlayTrigger>
+            </p>
+            )
           : (
             <div className="Profile__change">
               <input className="Profile__input" value={changed} onChange={(e) => setChanged(e.target.value)} />
@@ -97,8 +112,11 @@ const Profile = observer(() => {
         </div>
         <div className="Profile__user__change">
           <div onClick={() => setShow(!show)} className="Navbar__signIn">Add your meme</div>
-          <ProfileModal show={show} handleClick={() => setShow(!show)} />
+          <AddMemeModal show={show} handleClick={() => setShow(!show)} />
         </div>
+        <OverlayTrigger placement="top" overlay={<Tooltip style={{position:'absolute'}}>logout</Tooltip>}>
+          <NavLink onClick={() => logoutUser()} to="/" title='logout'><img className="ico2" src={logout} /></NavLink>
+        </OverlayTrigger>
       </div>
       <Memes memes={toJS(user.userMemes)} />
     </div>
@@ -107,9 +125,8 @@ const Profile = observer(() => {
       <div className="Profile__bg"></div>
       <div className="Profile__user">
           <div className="Profile__user__cont">
-            <img
-              className="Profile__user__avatar"
-              src={`${process.env.REACT_APP_API_URL}/${userData.user.avatar}`}/>
+          {/* <div className="Profile__user__ava" style={{backgroundImage: `url(${process.env.REACT_APP_API_URL}/${userData.user.avatar})`}}></div> */}
+            <img className="Profile__user__avatar" src={`${process.env.REACT_APP_API_URL}/${userData.user.avatar}`} />
           </div>
           <div className="Profile__user__about">
             <p>{userData.user.name}</p>

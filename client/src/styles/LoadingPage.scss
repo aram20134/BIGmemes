@@ -1,0 +1,12 @@
+.load {
+    display: flex;
+    width: 100%;
+    min-height: 100%;
+    align-items: center;
+    justify-content: center;
+    font-size: 96px;
+    flex-direction: column;
+    @media (max-width: 768px) {
+        font-size: 46px;
+    }
+}

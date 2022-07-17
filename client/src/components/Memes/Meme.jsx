@@ -82,7 +82,7 @@ const Meme = observer(({mem}) => {
       <div key={mems.id} className='Memes__cont'>
       {!user.isAuth && (<Modal show={show} onHide={() => setShow(!show)} centered><Alert style={{margin:'0'}} variant='danger'>Register First!</Alert><Modal.Footer><Button onClick={() => setShow(!show)}>OK</Button></Modal.Footer></Modal>)}
         <div className='Memes__title'>{mems.title ? mems.title : mems.img}</div>
-        {mems.img.split('.').pop() == 'mp4' ? (<video className='Memes__cont__vd' src={`${process.env.REACT_APP_API_URL}/${mems.img}`} controls></video>) : (<img className='Memes__cont__img' src={`${process.env.REACT_APP_API_URL}/${mems.img}`} controls></img>)}
+        {mems.img.split('.').pop() == 'mp4' || mems.img.split('.').pop() == 'ogv' ? (<video className='Memes__cont__vd' src={`${process.env.REACT_APP_API_URL}/${mems.img}`} controls></video>) : (<img className='Memes__cont__img' src={`${process.env.REACT_APP_API_URL}/${mems.img}`} controls></img>)}
         <div className='Memes__comms'>
             <NavLink to={`../profile/${usr.name}`} className='Memes__comms__user'><img className='Memes__comms__user__img' src={`${process.env.REACT_APP_API_URL}/${usr.avatar}`} />{usr.name}</NavLink>
             <div className='Memes__comms2'>

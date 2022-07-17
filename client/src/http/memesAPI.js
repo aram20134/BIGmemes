@@ -1,7 +1,7 @@
 import {$authHost, $host} from "./index";
 
-export const create = async (title, img, typeId, userId) => {
-    const {data} = await $authHost.post('api/memes', {title, img, typeId, userId})
+export const create = async (meme) => {
+    const {data} = await $authHost.post('api/memes', meme)
     return data
 }
 
