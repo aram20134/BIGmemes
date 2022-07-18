@@ -2,13 +2,13 @@ import React, { useState } from 'react'
 import { Button, Form, Modal, Image, Alert } from 'react-bootstrap';
 import { FloatingLabel } from 'react-bootstrap';
 import { useEffect, useContext } from 'react';
-import { create } from './../../http/memesAPI';
+import { create, getAllUser } from './../../http/memesAPI';
 import { Context } from './../../index';
 import '../../styles/Memes.scss'
+import { observer } from 'mobx-react-lite';
 
-export default function AddMemeModal({show, handleClick}) {
+const AddMemeModal = observer(({show, handleClick}) => {
 
-  const reader = new FileReader()
   const [img, setImg] = useState(null)
   const [preImg, setPreImg] = useState(null)
   const [name, setName] = useState('')
@@ -31,6 +31,7 @@ export default function AddMemeModal({show, handleClick}) {
     meme.append('userId', user.user.id) 
     create(meme).then(res => {
       setLoad(true)
+      getAllUser(user.user.id).then(m => user.setUserMemes(m))
       setTimeout(() => {
         handleClick()
       }, 1000);
@@ -68,4 +69,6 @@ export default function AddMemeModal({show, handleClick}) {
       </Modal.Footer>
     </Modal>
   )
-}
+})
+
+export default AddMemeModal

@@ -33,7 +33,11 @@ class MemesController {
         try {
             const {id} = req.query
             const memes = await UserMemes.findAll({where: {userId: id}})
-            const userMemes = await TheMemes.findAll({where: {id: memes.map(a => a.theMemeId)}})
+            const userMemes = await TheMemes.findAll(
+            {
+                where: {id: memes.map(a => a.theMemeId)},
+                include: [{model:Rating, as:'rate'}, {model: Comments}, {model:UserMemes}]
+            })
             return res.json(userMemes)
         } catch(e) {
             next(ApiError.badRequest(e.message))

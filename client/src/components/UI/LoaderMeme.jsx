@@ -14,8 +14,8 @@ export default function Loader() {
         
         <div className='Memes__g'><Spinner animation='border' /></div>
         <div className='Memes__comms'>
-          <Placeholder className='Memes__comms__user' style={{textAlign:'center'}} as="div" animation="glow">
-            <img src={user} /><Placeholder xs={12} />
+          <Placeholder className='Memes__comms__user' style={{textAlign:'start', width:'100%', justifyContent:'flex-start'}} as="div" animation="glow">
+            <img src={user} /><Placeholder xs={1} />
           </Placeholder>
         </div>
         </div>

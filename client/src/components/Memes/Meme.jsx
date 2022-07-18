@@ -19,7 +19,7 @@ import { Modal } from 'react-bootstrap';
 import { Alert } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 
-const Meme = observer(({mem}) => {
+const Meme = observer(({mem, view}) => {
     const {user} = useContext(Context)
 
     const [mems, setMems] = useState()
@@ -70,7 +70,6 @@ const Meme = observer(({mem}) => {
 
     useEffect(() => {
         getOne(mem.id).then(res => checkLike(res))
-        
     }, [])
 
     if (!load) {
@@ -78,12 +77,15 @@ const Meme = observer(({mem}) => {
     }
 
     return (
-      <div key={mems.id} className='Memes__cont'>
+      <div key={mems.id} className={view ? 'Memes__cont grid' : 'Memes__cont'}>
       {!user.isAuth && (<Modal show={show} onHide={() => setShow(!show)} centered><Alert style={{margin:'0'}} variant='danger'>Register First!</Alert><Modal.Footer><Button onClick={() => setShow(!show)}>OK</Button></Modal.Footer></Modal>)}
-        <div className='Memes__title'>{mems.title ? mems.title : mems.img}</div>
-        {mems.img.split('.').pop() == 'mp4' || mems.img.split('.').pop() == 'ogv' ? (<video className='Memes__cont__vd' src={`${process.env.REACT_APP_API_URL}/${mems.img}`} controls></video>) : (<img className='Memes__cont__img' src={`${process.env.REACT_APP_API_URL}/${mems.img}`} controls></img>)}
+        <div>
+            <div className='Memes__title'>{mems.title ? mems.title : mems.img}</div>
+            {mems.img.split('.').pop() == 'mp4' || mems.img.split('.').pop() == 'ogv' ? (<video className='Memes__cont__vd' src={`${process.env.REACT_APP_API_URL}/${mems.img}`} controls></video>) : (<img className='Memes__cont__img' src={`${process.env.REACT_APP_API_URL}/${mems.img}`} controls></img>)}
+        </div>
         <div className='Memes__comms'>
             <NavLink to={`../profile/${usr.name}`} className='Memes__comms__user'><img className='Memes__comms__user__img' src={`${process.env.REACT_APP_API_URL}/${usr.avatar}`} />{usr.name}</NavLink>
+            {new Date(mems.createdAt).toLocaleString()}
             <div className='Memes__comms2'>
                 <div onClick={() => isCom ? setIsCom(!isCom) : showComments()} className='Memes__comms2__comments' style={{textDecoration:'none'}} >
                     {comCount}
@@ -106,7 +108,7 @@ const Meme = observer(({mem}) => {
                             <div>{c.comment.text}</div>
                         </div>
                         <div>
-                            {c.comment.createdAt.slice(0, 10) + ' ' + c.comment.createdAt.slice(11, 19)}
+                            {new Date(c.comment.createdAt).toLocaleString()}
                         </div>
                     </div>)
                 })
