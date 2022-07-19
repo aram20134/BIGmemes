@@ -7,6 +7,7 @@ import {observer} from 'mobx-react-lite'
 import { Spinner } from 'react-bootstrap';
 import { check } from './http/userAPI';
 import { Context } from './index';
+import LoadingPage from './components/UI/LoadingPage';
 
 const App = observer(() => {
   const {user} = useContext(Context)
@@ -21,7 +22,7 @@ const App = observer(() => {
   }, [])
 
   if (loading) {
-    return <Spinner animation="border" />
+    return <LoadingPage />
   }
   
 

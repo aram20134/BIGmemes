@@ -14,14 +14,14 @@ const CheckMemes = () => {
     const [end, setEnd] = useState(false)
     const look = useRef()
     
-    document.addEventListener('scroll', useMemes(
+    useMemes(
         memes, (m) => {setMemes(m)}, 
         load, (l) => {setLoad(l)}, 
         count, (c) => {setCount(c)},
         end, (end) => {setEnd(end)},
         look
-    ))
-
+    )
+        
     return load && (
         <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '50px'}}>
             <h1>ALL MEMES</h1>
