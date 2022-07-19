@@ -8,7 +8,6 @@ export const useMemes = (memes, setMemes, load, setLoad, count, setCount, end, s
     const [fetching, setFetching] = useState(true)
 
     function checkScroll() {
-        console.log(end)
         if (end) return
         if (window.pageYOffset + look.current.getBoundingClientRect().bottom - 500 < window.pageYOffset + document.documentElement.clientHeight) {
             setFetching(true)
@@ -32,7 +31,6 @@ export const useMemes = (memes, setMemes, load, setLoad, count, setCount, end, s
 
     useEffect(() => {
         if (fetching) {
-            console.log('fetching')
             getAll(offset, 5)
                 .then(res =>{
                     setMemes([...memes, ...res.memes]) 
