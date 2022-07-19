@@ -6,10 +6,12 @@ import { Form } from 'react-bootstrap';
 import chevUp from '../../static/chevUp.png'
 import grid from '../../static/grid.png'
 import column from '../../static/column.png'
+import { CSSTransition } from 'react-transition-group';
 
 const Memes = observer(({memes}) => {  
-  var col = true
+
   const sortType = ['Date', 'Likes', 'Comments']
+  const [memesDynamic, setMemesDynamic] = useState(memes)
   const [sort, setSort] = useState(sortType[0])
   const [sortDirection, setSortDirection] = useState(false)
   const [view, setView] = useState(false)
@@ -36,7 +38,6 @@ const Memes = observer(({memes}) => {
   return (
     <div className='Memes-all'>
     {/* <h1>Memes</h1>   */}
-    {console.log(memes)}
       <div className='Memes__sort'>
         <div className='Memes__sort__sort'>
           <div>Sort by:</div>
@@ -58,12 +59,10 @@ const Memes = observer(({memes}) => {
         </div>
       </div>
       <div className={view ? 'Memes Memes_grid' : 'Memes'}>
-      {console.log(view)}
-        
         
           {memes.length
           ? (sortMemes(memes),
-            memes.map(mem =><Meme view={view} key={mem.id} mem={mem} />)
+            memes.map(mem => <Meme view={view} key={mem.id} mem={mem} />)
           )
           : (<div style={{fontSize:'52px', fontWeight:'bold'}}>There are no memes :( </div>)
           }

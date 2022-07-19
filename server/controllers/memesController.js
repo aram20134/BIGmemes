@@ -21,9 +21,16 @@ class MemesController {
     
     async getAll (req, res, next) {
         try {
-            const memes = await TheMemes.findAll({include: [{model:Rating, as:'rate'}]})
-
-            return res.json(memes)
+            const {offset, limit} = req.query
+            const memes = await TheMemes.findAll(
+                {
+                    offset: offset,
+                    order: [ [ 'createdAt', 'DESC' ]],
+                    limit: limit,
+                    include: [{model:Rating, as:'rate'}, {model: Comments}, {model:UserMemes}]
+                })
+            const count = await TheMemes.count()
+            return res.json({memes, count})
         } catch(e) {
             next(ApiError.badRequest(e.message))
         }

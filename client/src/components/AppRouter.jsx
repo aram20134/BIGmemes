@@ -17,7 +17,7 @@ const AppRouter = observer(() => {
         {privateRoutes.map((route) => {
             return <Route key={route.path} path={route.path} exact={route.exact} element={route.element} />
         })}
-        <Route path='*' element={<Navigate to="/" replace />} />
+        <Route path='*' element={<Navigate to="/checkmemes" replace />} />
     </Routes>
   ) : (
     <Routes>

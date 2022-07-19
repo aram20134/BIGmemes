@@ -30,7 +30,7 @@ $yellow: #FDCB6E;
         background-image: url('../static/ProfileBg.png');
         background-position:center;
         background-size: cover;
-        height: 300px;
+        height: 15vh;
         // filter: blur(2px);
     }
     &__input {
@@ -50,15 +50,22 @@ $yellow: #FDCB6E;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
-        height: 100px;
         max-width: 1000px;
         width: 100%;
+        flex-wrap: wrap;
         gap: 50px;
+        @media (max-width: 768px) {
+            gap: 25px;
+        }
         &__avatar {
             width: 100px;
             height: 100px;
             border-radius: 50%;
             object-fit: cover;
+            @media (max-width: 768px) {
+                width: 50px;
+                height: 50px;
+            }
         }
         &__ava {
             width: 100px;
@@ -78,12 +85,10 @@ $yellow: #FDCB6E;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            p {
-                margin: 0;
-            }
-            p:first-child {
+            div:first-child {
                 font-size: 24px;
                 font-weight: bold;
+                white-space: nowrap;
             }
         }
         

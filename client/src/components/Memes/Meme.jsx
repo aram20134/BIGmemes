@@ -18,6 +18,7 @@ import { toJS } from 'mobx';
 import { Modal } from 'react-bootstrap';
 import { Alert } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
+import { CSSTransition } from 'react-transition-group';
 
 const Meme = observer(({mem, view}) => {
     const {user} = useContext(Context)
@@ -77,6 +78,7 @@ const Meme = observer(({mem, view}) => {
     }
 
     return (
+        <CSSTransition key={mem.id} timeout={300} classNames='mem' appear in={true}>
       <div key={mems.id} className={view ? 'Memes__cont grid' : 'Memes__cont'}>
       {!user.isAuth && (<Modal show={show} onHide={() => setShow(!show)} centered><Alert style={{margin:'0'}} variant='danger'>Register First!</Alert><Modal.Footer><Button onClick={() => setShow(!show)}>OK</Button></Modal.Footer></Modal>)}
         <div>
@@ -127,6 +129,7 @@ const Meme = observer(({mem, view}) => {
             }
         </div>
       </div>
+      </CSSTransition>
     )
 })
 

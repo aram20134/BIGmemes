@@ -33,8 +33,6 @@ const Profile = observer(() => {
   const [userData, setUserData] = useState({});
   const [userMemes, setUserMemes] = useState();
 
-  const [test, setTest] = useState(1)
-
   const params = useParams();
 
   function logoutUser() {
@@ -92,11 +90,11 @@ const Profile = observer(() => {
           <div className="Profile__user__about">
           {!isChange 
           ? (
-            <p>{toJS(user.user.name)}
+            <div>{toJS(user.user.name)}
               <OverlayTrigger placement="top" overlay={<Tooltip style={{position:'absolute'}}>change your name</Tooltip>}>
                 <img style={{cursor:'pointer'}} onClick={() => setIsChange(true)} src={change} />
               </OverlayTrigger>
-            </p>
+            </div>
             )
           : (
             <div className="Profile__change">
@@ -123,14 +121,14 @@ const Profile = observer(() => {
   ) : (
     <div className="Profile">
       <div className="Profile__bg"></div>
-      <div className="Profile__user">
+      <div className="Profile__user" style={{justifyContent: 'flex-start'}}>
           <div className="Profile__user__cont">
           {/* <div className="Profile__user__ava" style={{backgroundImage: `url(${process.env.REACT_APP_API_URL}/${userData.user.avatar})`}}></div> */}
             <img className="Profile__user__avatar" src={`${process.env.REACT_APP_API_URL}/${userData.user.avatar}`} />
           </div>
           <div className="Profile__user__about">
-            <p>{userData.user.name}</p>
-            <p>Memes made: {userMemes ? userMemes.length : 0}</p>
+            <div>{userData.user.name}</div>
+            <div>Memes made: {userMemes ? userMemes.length : 0}</div>
           </div>
       </div>
       <Memes memes={userMemes} />

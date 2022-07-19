@@ -5,8 +5,13 @@ export const create = async (meme) => {
     return data
 }
 
-export const getAll = async () => {
-    const {data} = await $host.get('api/memes')
+export const getAll = async (offset, limit) => {
+    const {data} = await $host.get('api/memes', {
+        params: {
+            offset,
+            limit
+        }
+    })
     return data
 }
 export const getAllUser = async (id) => {
