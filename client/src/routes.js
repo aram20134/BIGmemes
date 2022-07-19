@@ -8,7 +8,6 @@ export const publicRoutes = [
     {path:'/checkmemes', element: <CheckMemes />, exact: true},
 ]
 export const privateRoutes = [
-    
     {path:'/profile/:username', element: <Profile />, exact: true},
     {path:'/checkmemes', element: <CheckMemes />, exact: true}
 ]

@@ -20,7 +20,7 @@ const Navbar = observer(() => {
                     <h3 className='Navbar__name'>Memes</h3>
                 </NavLink>
                 <div className='Navbar__cont_links'>
-                    <NavLink to="/" className='Navbar__link'>Check memes</NavLink>
+                    <NavLink to="/checkmemes" className='Navbar__link'>Check memes</NavLink>
                     <NavLink to="/" className='Navbar__link'>Top memers</NavLink>
                     <NavLink to="/" className='Navbar__link'>Learn more</NavLink>
                 </div>

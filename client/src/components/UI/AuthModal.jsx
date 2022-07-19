@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Modal, Button, Form, FloatingLabel, Alert } from "react-bootstrap";
+import { Modal, Button, Form, FloatingLabel, Alert, Spinner } from "react-bootstrap";
 import { observer } from "mobx-react-lite";
 import { Context } from "../../index";
 import { log, reg } from "../../http/userAPI";
@@ -121,9 +121,9 @@ const AuthModal = observer(({ show, handleClick }) => {
       </Modal.Body>
       <Modal.Footer>
         {auth ? (
-          <Button type="submit" >Create Account</Button>
+          validated && !axiosSuccess ? <Button type="submit" disabled>Loading <Spinner size="sm" animation="border" /></Button> : <Button type="submit" >Create Account</Button>
         ) : (
-          <Button type="submit" >Sign In</Button>
+          validated && !axiosSuccess ? <Button type="submit" disabled>Loading <Spinner size="sm" animation="border" /></Button> : <Button type="submit" >Sign In</Button>
         )}
         <Button variant="secondary" onClick={handleClick}>Закрыть</Button>
       </Modal.Footer>

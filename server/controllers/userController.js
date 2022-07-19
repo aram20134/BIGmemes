@@ -17,7 +17,7 @@ class UserController {
     async reg (req, res, next) {
         try {
             const {email, password, name} = req.body
-            const {avatar} = req.files
+            // const {avatar} = req.files
 
             if (!email || !password) {
                 return next(ApiError.badRequest('Неккоректный email или пароль'))
@@ -31,8 +31,8 @@ class UserController {
                 return next(ApiError.badRequest(`Пользователь с именем ${name} уже существует`))
             }
 
-            let fileName = uuid.v4() + '.' + avatar.name.split('.').pop()
-            avatar.mv(path.resolve(__dirname, '..', 'static', fileName))
+            // let fileName = uuid.v4() + '.' + avatar.name.split('.').pop()
+            // avatar.mv(path.resolve(__dirname, '..', 'static', fileName))
 
             const hashPassword = await bcrypt.hash(password, 5)
             const users = await User.create({email, password:hashPassword, name, avatar: fileName})
