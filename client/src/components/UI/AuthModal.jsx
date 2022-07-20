@@ -121,9 +121,9 @@ const AuthModal = observer(({ show, handleClick }) => {
       </Modal.Body>
       <Modal.Footer>
         {auth ? (
-          validated && !axiosSuccess ? <Button type="submit" disabled>Loading <Spinner size="sm" animation="border" /></Button> : <Button type="submit" >Create Account</Button>
+          axiosSuccess && validated && !axiosSuccess ? <Button type="submit" disabled>Loading <Spinner size="sm" animation="border" /></Button> : <Button type="submit" >Create Account</Button>
         ) : (
-          validated && !axiosSuccess ? <Button type="submit" disabled>Loading <Spinner size="sm" animation="border" /></Button> : <Button type="submit" >Sign In</Button>
+          axiosSuccess && validated && !axiosSuccess ? <Button type="submit" disabled>Loading <Spinner size="sm" animation="border" /></Button> : <Button type="submit" >Sign In</Button>
         )}
         <Button variant="secondary" onClick={handleClick}>Закрыть</Button>
       </Modal.Footer>
