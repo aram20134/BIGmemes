@@ -6,12 +6,10 @@ import { Form } from 'react-bootstrap';
 import chevUp from '../../static/chevUp.png'
 import grid from '../../static/grid.png'
 import column from '../../static/column.png'
-import { CSSTransition } from 'react-transition-group';
 
 const Memes = observer(({memes}) => {  
 
   const sortType = ['Date', 'Likes', 'Comments']
-  const [memesDynamic, setMemesDynamic] = useState(memes)
   const [sort, setSort] = useState(sortType[0])
   const [sortDirection, setSortDirection] = useState(false)
   const [view, setView] = useState(false)

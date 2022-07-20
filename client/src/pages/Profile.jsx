@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useEffect, useState } from "react";
 import { getAllUser } from "../http/memesAPI";
 import { useContext } from "react";
@@ -18,11 +18,17 @@ import Error from './Error';
 import logout from '../static/logout.png'
 import LoadingPage from "../components/UI/LoadingPage";
 import AvatarEditor from 'react-avatar-editor'
+import { useMemes } from './../hooks/useMemes';
+import SuperWord from './../components/UI/SuperWord';
 
 const Profile = observer(() => {
-  const { meme, user } = useContext(Context);
+  const { user } = useContext(Context);
 
   const navigate = useNavigate()
+
+  const [end, setEnd] = useState(false)
+  const [memesPag, setMemesPag] = useState([])
+  const [count, setCount] = useState(0)
 
   const [load, setLoad] = useState(false);
   const [owned, setOwned] = useState(false);
@@ -34,6 +40,7 @@ const Profile = observer(() => {
   const [userMemes, setUserMemes] = useState();
 
   const params = useParams();
+  const look = useRef()
 
   function logoutUser() {
     localStorage.removeItem('token')
@@ -59,6 +66,7 @@ const Profile = observer(() => {
           if (res.user.id === user.user.id) {
             setOwned(true) 
             setLoad(true)
+            
           } else {
             getAllUser(res.user.id).then(a => {setUserMemes(a); setLoad(true);setOwned(false)})
             setUserData(res);
@@ -117,6 +125,8 @@ const Profile = observer(() => {
         </OverlayTrigger>
       </div>
       <Memes memes={toJS(user.userMemes)} />
+      <div ref={look} id="look" style={{width:'100%', background:'wheat'}}></div>
+      {end ? <h2 style={{margin:'15px'}}>There are no more <SuperWord word='memes' />...</h2> : ''}
     </div>
   ) : (
     <div className="Profile">

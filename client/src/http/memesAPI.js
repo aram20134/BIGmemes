@@ -1,7 +1,12 @@
 import {$authHost, $host} from "./index";
 
-export const create = async (meme) => {
-    const {data} = await $authHost.post('api/memes', meme)
+export const create = async (meme, pbar, setPbar) => {
+    const {data} = await $authHost.post('api/memes', meme, {
+        onUploadProgress: (progressEvent) => {
+            setPbar(Math.round((progressEvent.loaded * 100) / progressEvent.total))
+        },
+        
+    })
     return data
 }
 

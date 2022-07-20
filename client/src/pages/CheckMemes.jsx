@@ -6,8 +6,9 @@ import '../styles/Memes.scss'
 import { useRef } from 'react';
 import SuperWord from '../components/UI/SuperWord';
 import {useMemes} from '../hooks/useMemes';
+import { observer } from 'mobx-react-lite';
 
-const CheckMemes = () => {
+const CheckMemes = observer(() => {
     const [memes, setMemes] = useState([])
     const [load, setLoad] = useState(false)
     const [count, setCount] = useState(0)
@@ -15,22 +16,22 @@ const CheckMemes = () => {
     const look = useRef()
     
     useMemes(
-        memes, (m) => {setMemes(m)}, 
-        load, (l) => {setLoad(l)}, 
-        count, (c) => {setCount(c)},
-        end, (end) => {setEnd(end)},
+        memes, setMemes, 
+        load, setLoad, 
+        count, setCount,
+        end, setEnd,
         look
     )
         
     return load && (
         <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '50px'}}>
-            <h1>ALL MEMES</h1>
+            <h1 style={{fontSize:'48px'}}><SuperWord word='ALL MEMES' /></h1>
             <div>we have {count} Memes!</div>
             <Memes memes={memes} />
             <div ref={look} id="look" style={{width:'100%', background:'wheat'}}></div>
             {end ? <h2 style={{margin:'15px'}}>There are no more <SuperWord word='memes' />...</h2> : ''}
         </div>
     )
-}
+})
 
 export default CheckMemes
