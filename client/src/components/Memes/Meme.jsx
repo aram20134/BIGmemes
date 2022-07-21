@@ -90,7 +90,7 @@ const Meme = observer(({mem, view}) => {
         <div>
             <div style={{display: 'flex', position: 'relative', alignItems: 'center', justifyContent: 'center'}}>
                 <div className='Memes__title'>{mems.title ? mems.title : mems.img}</div>
-                <div style={{position:'absolute', right:'0'}}>{mem.user_meme.userId == user.user.id ? <OverlayTrigger placement="top" overlay={<Tooltip style={{position:'absolute'}}>delete meme</Tooltip>}><img onClick={deleteMeme} style={{cursor:'pointer'}} src={xRed} /></OverlayTrigger> : 'ne aboba'}</div>
+                <div style={{position:'absolute', right:'0'}}>{mem.user_meme.userId == user.user.id ? <OverlayTrigger placement="top" overlay={<Tooltip style={{position:'absolute'}}>delete meme</Tooltip>}><img onClick={deleteMeme} style={{cursor:'pointer'}} src={xRed} /></OverlayTrigger> : ''}</div>
             </div>
             {mems.img.split('.').pop() == 'mp4' || mems.img.split('.').pop() == 'ogv' ? (<video className='Memes__cont__vd' src={`${process.env.REACT_APP_API_URL}/${mems.img}`} controls></video>) : (<img className='Memes__cont__img' src={`${process.env.REACT_APP_API_URL}/${mems.img}`}></img>)}
         </div>
