@@ -23,9 +23,10 @@ class MemesController {
         try {
             const {id} = req.body
             
-            const meme = await TheMemes.findOne({where: {id}})
-            // await UserMemes.destroy({where: {theMemeId: id}})
-            // fs.unlinkSync
+            const {img} = await TheMemes.findOne({where: {id}})
+            const meme = await TheMemes.destroy({where: {id}})
+            await UserMemes.destroy({where: {theMemeId: id}})
+            fs.unlinkSync(path.resolve(__dirname, '..', 'static', img))
             return res.json(meme)
         } catch(e) {
             next(ApiError.badRequest(e.message))
@@ -38,7 +39,7 @@ class MemesController {
             const memes = await TheMemes.findAll(
                 {
                     offset: offset,
-                    order: [ [ 'createdAt', 'DESC' ]],
+                    order: [[ 'createdAt', 'DESC' ]],
                     limit: limit,
                     include: [{model:Rating, as:'rate'}, {model: Comments}, {model:UserMemes}]
                 })
