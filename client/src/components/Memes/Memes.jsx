@@ -57,7 +57,6 @@ const Memes = observer(({memes}) => {
         </div>
       </div>
       <div className={view ? 'Memes Memes_grid' : 'Memes'}>
-        
           {memes.length
           ? (sortMemes(memes),
             memes.map(mem => <Meme view={view} key={mem.id} mem={mem} />)

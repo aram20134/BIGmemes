@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import likeOff from '../../static/like.png'
 import likeOn from '../../static/likeOn.png'
 import comment from '../../static/comment.png'
-import { getOne } from '../../http/memesAPI'
+import { delMeme, getOne } from '../../http/memesAPI'
 import { useEffect } from 'react';
 import LoaderMeme from '../UI/LoaderMeme';
 import { NavLink } from 'react-router-dom';
@@ -11,14 +11,15 @@ import { useContext } from 'react';
 import { Context } from './../../index';
 import { addLike, delLike } from './../../http/rateAPI';
 import { getUserId, writeComment } from '../../http/userAPI';
-
+import xRed from '../../static/xRed.png'
 import checkG from '../../static/check.png'
 import cancel from '../../static/cancel.png'
 import { toJS } from 'mobx';
-import { Modal } from 'react-bootstrap';
+import { Modal, Spinner, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import { Alert } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 import { CSSTransition } from 'react-transition-group';
+
 
 const Meme = observer(({mem, view}) => {
     const {user} = useContext(Context)
@@ -56,6 +57,11 @@ const Meme = observer(({mem, view}) => {
             console.log(e)
         }
     }
+    function deleteMeme() {
+        console.log(mem.id)
+        delMeme(mem.id).then((r) => user.setUserMemes(toJS(user.userMemes).filter((m) => m.id == mem.id ? '' : m)))
+        
+    }
 
     function showComments() {
         setIsCom(!isCom)
@@ -82,8 +88,11 @@ const Meme = observer(({mem, view}) => {
       <div key={mems.id} className={view ? 'Memes__cont grid' : 'Memes__cont'}>
       {!user.isAuth && (<Modal show={show} onHide={() => setShow(!show)} centered><Alert style={{margin:'0'}} variant='danger'>Register First!</Alert><Modal.Footer><Button onClick={() => setShow(!show)}>OK</Button></Modal.Footer></Modal>)}
         <div>
-            <div className='Memes__title'>{mems.title ? mems.title : mems.img}</div>
-            {mems.img.split('.').pop() == 'mp4' || mems.img.split('.').pop() == 'ogv' ? (<video className='Memes__cont__vd' src={`${process.env.REACT_APP_API_URL}/${mems.img}`} controls></video>) : (<img className='Memes__cont__img' src={`${process.env.REACT_APP_API_URL}/${mems.img}`} controls></img>)}
+            <div style={{display: 'flex', position: 'relative', alignItems: 'center', justifyContent: 'center'}}>
+                <div className='Memes__title'>{mems.title ? mems.title : mems.img}</div>
+                <div style={{position:'absolute', right:'0'}}>{mem.user_meme.userId == user.user.id ? <OverlayTrigger placement="top" overlay={<Tooltip style={{position:'absolute'}}>delete meme</Tooltip>}><img onClick={deleteMeme} style={{cursor:'pointer'}} src={xRed} /></OverlayTrigger> : 'ne aboba'}</div>
+            </div>
+            {mems.img.split('.').pop() == 'mp4' || mems.img.split('.').pop() == 'ogv' ? (<video className='Memes__cont__vd' src={`${process.env.REACT_APP_API_URL}/${mems.img}`} controls></video>) : (<img className='Memes__cont__img' src={`${process.env.REACT_APP_API_URL}/${mems.img}`}></img>)}
         </div>
         <div className='Memes__comms'>
             <NavLink to={`../profile/${usr.name}`} className='Memes__comms__user'><img className='Memes__comms__user__img' src={`${process.env.REACT_APP_API_URL}/${usr.avatar}`} />{usr.name}</NavLink>
@@ -97,7 +106,7 @@ const Meme = observer(({mem, view}) => {
             </div>
         </div>
         <div onClick={(e)=> {e.stopPropagation(); e.preventDefault()}} className={`${isCom ? 'Memes__comms2__com_section active' : 'Memes__comms2__com_section'}`}>
-            <div style={{fontSize:'20px', fontWeight:'bold'}}>{com.length} comments on meme</div>
+            {com.length ? <div style={{fontSize:'20px', fontWeight:'bold'}}>{com.length} comments on meme</div> : <div><Spinner animation='border' /></div>}
             {com.length
             ? (
                 com.map(c => { return(

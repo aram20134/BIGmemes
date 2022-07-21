@@ -2,6 +2,7 @@ const uuid = require('uuid')
 const path = require('path')
 const ApiError = require('../error/ApiError')
 const { TheMemes, Rating, UserMemes, Comments, User } = require('../models/models')
+const fs = require('fs')
 
 class MemesController {
     async create (req, res, next) {
@@ -12,7 +13,19 @@ class MemesController {
             img.mv(path.resolve(__dirname, '..', 'static', fileName))
 
             const meme = await TheMemes.create({title, img:fileName, typeId})
-            const userMeme = await UserMemes.create({userId:userId, theMemeId:meme.id})
+            await UserMemes.create({userId:userId, theMemeId:meme.id})
+            return res.json(meme)
+        } catch(e) {
+            next(ApiError.badRequest(e.message))
+        }
+    }
+    async delete(req, res, next) {
+        try {
+            const {id} = req.body
+            
+            const meme = await TheMemes.findOne({where: {id}})
+            // await UserMemes.destroy({where: {theMemeId: id}})
+            // fs.unlinkSync
             return res.json(meme)
         } catch(e) {
             next(ApiError.badRequest(e.message))

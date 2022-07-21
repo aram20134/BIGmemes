@@ -10,6 +10,11 @@ export const create = async (meme, pbar, setPbar) => {
     return data
 }
 
+export const delMeme = async (id) => {
+    const {data} = await $authHost.post('api/memes/delmeme', {id})
+    return data
+}
+
 export const getAll = async (offset, limit) => {
     const {data} = await $host.get('api/memes', {
         params: {
