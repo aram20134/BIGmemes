@@ -115,7 +115,8 @@ $yellow: #FDCB6E;
         align-items: center;
         justify-content: space-between;
         flex-direction: row;
-        gap: 15px;
+        // gap: 15px;
+        margin: 0 10px;
         position: relative;
         &__user {
             display: flex;
@@ -142,6 +143,12 @@ $yellow: #FDCB6E;
             display: flex;
         }
         &__likes {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        &__share {
             cursor: pointer;
             display: flex;
             align-items: center;

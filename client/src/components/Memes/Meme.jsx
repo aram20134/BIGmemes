@@ -14,6 +14,7 @@ import { getUserId, writeComment } from '../../http/userAPI';
 import xRed from '../../static/xRed.png'
 import checkG from '../../static/check.png'
 import cancel from '../../static/cancel.png'
+import share from '../../static/share.png'
 import { toJS } from 'mobx';
 import { Modal, Spinner, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import { Alert } from 'react-bootstrap';
@@ -36,6 +37,7 @@ const Meme = observer(({mem, view}) => {
     const [wantCom, setWantCom] = useState(true)
     const [textWantCom, setTextWantCom] = useState('')
     const [show, setShow] = useState(false)
+    const [copied, setCopied] = useState(false)
 
     function setStates(res) {
         setMems(res.meme);
@@ -103,11 +105,25 @@ const Meme = observer(({mem, view}) => {
             <NavLink to={`../profile/${usr.name}`} className='Memes__comms__user'><img className='Memes__comms__user__img' src={`${process.env.REACT_APP_API_URL}/${usr.avatar}`} />{usr.name}</NavLink>
             {new Date(mems.createdAt).toLocaleString()}
             <div className='Memes__comms2'>
-                <div onClick={() => isCom ? setIsCom(!isCom) : showComments()} className='Memes__comms2__comments' style={{textDecoration:'none'}} >
-                    {comCount}
-                    <img src={comment} />
+                <div className='Memes__comms2__share'>
+                    <OverlayTrigger placement='top' overlay={<Tooltip style={{position:'absolute'}}>{copied ? 'copied!' : 'copy link to meme'}</Tooltip>}>
+                        <Button onClick={() => {return setCopied(true), setTimeout(() => {setCopied(false)}, 1000)}} variant={copied ? 'success' : 'light'}>
+                            <img style={{filter: copied ? 'brightness(5)' : ''}} onClick={() => navigator.clipboard.writeText('https://bestmemes.ru/checkmemes/' + mems.id)} src={share} />
+                        </Button>
+                    </OverlayTrigger>
                 </div>
-                <div className='Memes__comms2__likes'>{likes}<img onClick={like} src={isLiked ? likeOn : likeOff} /></div>
+                <div onClick={() => isCom ? setIsCom(!isCom) : showComments()} className='Memes__comms2__comments' style={{textDecoration:'none'}} >
+                    <Button variant='light'>
+                        {comCount}
+                        <img src={comment} />
+                    </Button>
+                </div>
+                <div className='Memes__comms2__likes'>
+                    <Button variant='light'>
+                        {likes}
+                        <img onClick={like} src={isLiked ? likeOn : likeOff} />
+                    </Button>
+                </div>
             </div>
         </div>
         <div onClick={(e)=> {e.stopPropagation(); e.preventDefault()}} className={`${isCom ? 'Memes__comms2__com_section active' : 'Memes__comms2__com_section'}`}>
