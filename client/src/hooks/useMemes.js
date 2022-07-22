@@ -12,10 +12,9 @@ export const useMemes = (memes, setMemes, load, setLoad, count, setCount, end, s
     const params = useParams()
 
     useEffect(() => {
-
         if (params.id) {
-            getOne(params.id).then((res) => {return setMemes([res.meme]), setLoad(true)})
-            console.log(memes)
+            console.log('getOne')
+            getOne(params.id).then((res) => setMemes([res.meme]), setLoad(true))
         } 
         function checkScroll() {
             if (!load || end) {
@@ -27,39 +26,40 @@ export const useMemes = (memes, setMemes, load, setLoad, count, setCount, end, s
         }
 
         document.addEventListener('scroll', checkScroll) 
-    
+        if (count < offset) {
+            setEnd(true)
+            setFetching(false)
+            return
+        } 
       return () => {
         document.removeEventListener('scroll', checkScroll)
         if (params.id) {
-            console.log('id')
-            setOffset(prev => 0)
-            setFetching(true)
-            setEnd(false)
-            setMemes([])
-            setLoad(false)
+            (async function() {
+                setOffset(0)
+                setFetching(true)
+                setEnd(false)
+                setMemes([])
+            }())
+            
         }
     }
-    }, [offset, end, load, look, params])
+    }, [offset, load, look, params])
     
     useEffect(() => {
         
         if (fetching && !end && !params.id) {
-            console.log('fetch')
-            if (count < offset) {
-                setEnd(true)
-                setFetching(false)
-                return
-            } 
             getAll(offset, 4)
                 .then(async(res) =>{
-                    console.log(offset)
-                    await setMemes([...memes, ...res.memes]) 
+                    await setMemes(prev => [...prev, ...res.memes]) 
                     await setLoad(true) 
                     await setCount(res.count)
                     setOffset(prev => prev + 4)
                 })
                 .finally(() => setFetching(false))
                 .catch((e) => console.log(e))
+        }
+        if (count == 0) {
+            getAll(offset, 4).then(async (res) => await setCount(res.count))
         }
     }, [fetching, offset, params])
 

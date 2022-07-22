@@ -16,7 +16,6 @@ const CheckMemes = observer(() => {
     const [count, setCount] = useState(0)
     const [end, setEnd] = useState(false)
     const look = useRef()
-    
 
     useMemes(
         memes, setMemes, 
@@ -25,11 +24,8 @@ const CheckMemes = observer(() => {
         end, setEnd,
         look, 
     )
-    // useEffect(() => {
 
-    // }, [params])
-    // params.id && getOne(params.id).then(res => setMemes([res.meme]))
-
+    console.log(load, memes)
     return load && (
         <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '50px'}}>
             <h1 style={{fontSize:'48px'}}><SuperWord word='ALL MEMES' /></h1>
