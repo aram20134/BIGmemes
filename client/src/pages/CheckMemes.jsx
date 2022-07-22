@@ -7,6 +7,8 @@ import { useRef } from 'react';
 import SuperWord from '../components/UI/SuperWord';
 import {useMemes} from '../hooks/useMemes';
 import { observer } from 'mobx-react-lite';
+import { useParams } from 'react-router-dom';
+import { getOne } from './../http/memesAPI';
 
 const CheckMemes = observer(() => {
     const [memes, setMemes] = useState([])
@@ -15,14 +17,19 @@ const CheckMemes = observer(() => {
     const [end, setEnd] = useState(false)
     const look = useRef()
     
+
     useMemes(
         memes, setMemes, 
         load, setLoad, 
         count, setCount,
         end, setEnd,
-        look
+        look, 
     )
-        
+    // useEffect(() => {
+
+    // }, [params])
+    // params.id && getOne(params.id).then(res => setMemes([res.meme]))
+
     return load && (
         <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '50px'}}>
             <h1 style={{fontSize:'48px'}}><SuperWord word='ALL MEMES' /></h1>

@@ -31,7 +31,7 @@ const AddMemeModal = observer(({show, handleClick}) => {
     const meme = new FormData()
     meme.append('title', name.length ? name : img.name)
     meme.append('img', img)
-    meme.append('typeId', 1)
+    meme.append('typeId', 2)
     meme.append('userId', user.user.id) 
     setLoading(true)
     setError(false)

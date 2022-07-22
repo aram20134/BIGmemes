@@ -6,7 +6,7 @@ import comment from '../../static/comment.png'
 import { delMeme, getOne } from '../../http/memesAPI'
 import { useEffect } from 'react';
 import LoaderMeme from '../UI/LoaderMeme';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Navigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { Context } from './../../index';
 import { addLike, delLike } from './../../http/rateAPI';
@@ -32,12 +32,17 @@ const Meme = observer(({mem, view}) => {
     const [isCom, setIsCom] = useState(false)
     const [comCount, setComCount] = useState(0)
     const [com, setCom] = useState([])
+    const [comLoaded, setComLoaded] = useState(false)
     const [wantCom, setWantCom] = useState(true)
     const [textWantCom, setTextWantCom] = useState('')
     const [show, setShow] = useState(false)
 
-    function checkLike(res) {
-        setMems(res.meme);setUsr(res.user);setLoad(true);setLikes(res.meme.rate.length);setComCount(res.meme.comments.length)
+    function setStates(res) {
+        setMems(res.meme);
+        setUsr(res.user);
+        setLoad(true);
+        setLikes(res.meme.rate.length);
+        setComCount(res.meme.comments.length)
 
         res.meme.rate.length
         ? res.meme.rate.map(likes => {
@@ -67,7 +72,7 @@ const Meme = observer(({mem, view}) => {
         setIsCom(!isCom)
         setCom([])
         mems.comments.length 
-        && mems.comments.map(async comment => await getUserId(comment.userId).then(us => setCom(prev => [...prev, {user:us.user, comment}])))
+        && mems.comments.map(async comment => await getUserId(comment.userId).then(us => setCom(prev => [...prev, {user:us.user, comment}])).finally(setComLoaded(true)))
     }
     function addComment(event) {
         setWantCom(!wantCom)
@@ -76,7 +81,7 @@ const Meme = observer(({mem, view}) => {
     }
 
     useEffect(() => {
-        getOne(mem.id).then(res => checkLike(res))
+        getOne(mem.id).then(res => setStates(res))
     }, [])
 
     if (!load) {
@@ -84,12 +89,12 @@ const Meme = observer(({mem, view}) => {
     }
 
     return (
-        <CSSTransition key={mem.id} timeout={300} classNames='mem' appear in={true}>
+    <CSSTransition key={mem.id} timeout={300} classNames='mem' appear in={true}>
       <div key={mems.id} className={view ? 'Memes__cont grid' : 'Memes__cont'}>
       {!user.isAuth && (<Modal show={show} onHide={() => setShow(!show)} centered><Alert style={{margin:'0'}} variant='danger'>Register First!</Alert><Modal.Footer><Button onClick={() => setShow(!show)}>OK</Button></Modal.Footer></Modal>)}
         <div>
             <div style={{display: 'flex', position: 'relative', alignItems: 'center', justifyContent: 'center'}}>
-                <div className='Memes__title'>{mems.title ? mems.title : mems.img}</div>
+                <NavLink to={`../checkmemes/${mems.id}`}><div className='Memes__title'>{mems.title ? mems.title : mems.img}</div></NavLink>
                 <div style={{position:'absolute', right:'0'}}>{mem.user_meme.userId == user.user.id ? <OverlayTrigger placement="top" overlay={<Tooltip style={{position:'absolute'}}>delete meme</Tooltip>}><img onClick={deleteMeme} style={{cursor:'pointer'}} src={xRed} /></OverlayTrigger> : ''}</div>
             </div>
             {mems.img.split('.').pop() == 'mp4' || mems.img.split('.').pop() == 'ogv' ? (<video className='Memes__cont__vd' src={`${process.env.REACT_APP_API_URL}/${mems.img}`} controls></video>) : (<img className='Memes__cont__img' src={`${process.env.REACT_APP_API_URL}/${mems.img}`}></img>)}
@@ -106,8 +111,9 @@ const Meme = observer(({mem, view}) => {
             </div>
         </div>
         <div onClick={(e)=> {e.stopPropagation(); e.preventDefault()}} className={`${isCom ? 'Memes__comms2__com_section active' : 'Memes__comms2__com_section'}`}>
-            {com.length ? <div style={{fontSize:'20px', fontWeight:'bold'}}>{com.length} comments on meme</div> : <div><Spinner animation='border' /></div>}
-            {com.length
+            {comCount != 0 && <div style={{fontSize:'20px', fontWeight:'bold'}}>{com.length} comments on meme</div>}
+            {comLoaded && comCount === 0 && <div><Spinner animation='border' /></div>}
+            {comCount
             ? (
                 com.map(c => { return(
                     <div key={c.comment.id} className='Memes__com'>
@@ -138,7 +144,7 @@ const Meme = observer(({mem, view}) => {
             }
         </div>
       </div>
-      </CSSTransition>
+    </CSSTransition>
     )
 })
 
