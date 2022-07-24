@@ -11,7 +11,6 @@ const AuthModal = observer(({ show, handleClick }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [email, setEmail] = useState('')
-  const [error, setError] = useState(true)
   const [axiosError, setAxiosError] = useState('')
   const [axiosSuccess, setAxiosSuccess] = useState(false)
   const [validated, setValidated] = useState(false);
@@ -22,6 +21,14 @@ const AuthModal = observer(({ show, handleClick }) => {
     setAxiosSuccess(false)
   }, [username, password, email, auth])
 
+  useEffect(() => {
+    return () => {
+      setValidated(false)
+      setAxiosError(false)
+      setAxiosSuccess(false)
+    }
+  }, [show])
+  
   const checkSubmit = async (event) => {
     const form = event.currentTarget;
     event.preventDefault();
@@ -121,9 +128,9 @@ const AuthModal = observer(({ show, handleClick }) => {
       </Modal.Body>
       <Modal.Footer>
         {auth ? (
-          axiosSuccess && validated && !axiosSuccess ? <Button type="submit" disabled>Loading <Spinner size="sm" animation="border" /></Button> : <Button type="submit" >Create Account</Button>
+          validated && !axiosSuccess ? <Button type="submit" disabled>Loading <Spinner size="sm" animation="border" /></Button> : <Button type="submit" >Create Account</Button>
         ) : (
-          axiosSuccess && validated && !axiosSuccess ? <Button type="submit" disabled>Loading <Spinner size="sm" animation="border" /></Button> : <Button type="submit" >Sign In</Button>
+          validated && !axiosSuccess ? <Button type="submit" disabled>Loading <Spinner size="sm" animation="border" /></Button> : <Button type="submit" >Sign In</Button>
         )}
         <Button variant="secondary" onClick={handleClick}>Закрыть</Button>
       </Modal.Footer>

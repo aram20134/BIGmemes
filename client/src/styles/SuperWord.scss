@@ -4,6 +4,7 @@ $red: #D63031;
     color: $red;
     position: relative;
     text-shadow: 0px 4px 0 white;
+    z-index: -1;
     &::before {
         content: '';
         background-color: #55EFC4;

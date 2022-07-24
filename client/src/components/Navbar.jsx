@@ -6,11 +6,14 @@ import vector from '../static/vector.png';
 import AuthModal from './UI/AuthModal';
 import { observer } from 'mobx-react-lite';
 import { Context } from './../index';
+import SearchBar from './SearchBar/SearchBar';
 
 const Navbar = observer(() => {
     const [IsMenuOpen, setIsMenuOpen] = useState(true)
     const [show, setShow] = useState(false);
+    const [search, setSearch] = useState(false)
     const {user} = useContext(Context)
+
   return (
     <div className='Navbar'>
         <div className='Navbar__container'>
@@ -20,9 +23,17 @@ const Navbar = observer(() => {
                     <h3 className='Navbar__name'>Memes</h3>
                 </NavLink>
                 <div className='Navbar__cont_links'>
-                    <NavLink to="/checkmemes" className='Navbar__link'>Check memes</NavLink>
-                    <NavLink to="/" className='Navbar__link'>Top memers</NavLink>
-                    <NavLink to="/" className='Navbar__link'>Learn more</NavLink>
+                    {search 
+                    ?  ''
+                    :  (
+                        <>
+                        <NavLink to="/checkmemes" className='Navbar__link'>Check memes</NavLink>
+                        <NavLink to="/" className='Navbar__link'>Top memers</NavLink>
+                        <NavLink to="/" className='Navbar__link'>Learn more</NavLink>
+                        </>
+                    )
+                    }
+                    <SearchBar search={search} setSearch={setSearch} />
                 </div>
                 {user.isAuth 
                 ? (<NavLink to={`/profile/${user.user.name}`} className='Navbar__signIn'>Profile</NavLink>)

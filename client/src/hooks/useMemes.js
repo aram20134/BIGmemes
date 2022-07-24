@@ -38,6 +38,7 @@ export const useMemes = (memes, setMemes, load, setLoad, count, setCount, end, s
                 setOffset(0)
                 setFetching(true)
                 setEnd(false)
+                setLoad(false)
                 setMemes([])
             }())
             
