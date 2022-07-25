@@ -26,8 +26,8 @@ const CheckMemes = observer(() => {
     )
 
     return load && (
-        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', position:'relative',marginTop: '50px'}}>
-            <h1 style={{fontSize:'48px'}}><SuperWord word='ALL MEMES' /></h1>
+        <div style={{display: 'flex', minHeight: '100%', backgroundColor:'whitesmoke',flexDirection: 'column', alignItems: 'center', position:'relative'}}>
+            <h1 style={{fontSize:'48px', marginTop: '50px', zIndex: '1'}}><SuperWord word='ALL MEMES' /></h1>
             <div>we have {count} Memes!</div>
             <Memes memes={memes} />
             <div ref={look} id="look" style={{width:'100%', background:'wheat'}}></div>

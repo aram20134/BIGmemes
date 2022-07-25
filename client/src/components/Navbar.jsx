@@ -28,7 +28,7 @@ const Navbar = observer(() => {
                     :  (
                         <>
                         <NavLink to="/checkmemes" className='Navbar__link'>Check memes</NavLink>
-                        <NavLink to="/" className='Navbar__link'>Top memers</NavLink>
+                        <NavLink to="/topmemers" className='Navbar__link'>Top memers</NavLink>
                         <NavLink to="/" className='Navbar__link'>Learn more</NavLink>
                         </>
                     )

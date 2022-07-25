@@ -23,6 +23,7 @@ export default function SearchQuery({data, setSearch}) {
             <NavLink className='SearchQuery__link' onClick={() => setSearch(false)} key={d.id} to={`../profile/` + d.name}>
                 <Button className='SearchQuery__link' variant='outline-primary' >
                     <div>{d.name}</div>
+                    <div>Memes: {d.user_memes.length}</div>
                 </Button>
             </NavLink>
         )}

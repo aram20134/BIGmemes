@@ -13,7 +13,6 @@ export const useMemes = (memes, setMemes, load, setLoad, count, setCount, end, s
 
     useEffect(() => {
         if (params.id) {
-            console.log('getOne')
             getOne(params.id).then((res) => setMemes([res.meme]), setLoad(true))
         } 
         function checkScroll() {

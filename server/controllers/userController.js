@@ -1,5 +1,5 @@
 const ApiError = require('../error/ApiError')
-const { User, Rating } = require('../models/models')
+const { User, Rating, Comments, UserMemes, TheMemes } = require('../models/models')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const uuid = require('uuid')
@@ -35,7 +35,7 @@ class UserController {
             // avatar.mv(path.resolve(__dirname, '..', 'static', fileName))
 
             const hashPassword = await bcrypt.hash(password, 5)
-            const users = await User.create({email, password:hashPassword, name, avatar: fileName})
+            const users = await User.create({email, password:hashPassword, name})
             const token = signJWT(users.id, email, name, users.avatar)
             return res.json({token})
         } catch (e) {
@@ -65,7 +65,9 @@ class UserController {
 
     async getUsers (req, res, next) {
         try {
-            const users = await User.findAll()
+            const users = await User.findAll({
+                include: [{model: Comments}, {model:UserMemes}]
+            })
             return res.json({users})
         } catch (e) {
             next(ApiError.badRequest(e.message))
@@ -75,7 +77,10 @@ class UserController {
     async getUserId (req, res, next) {
         try {
             const {id} = req.query
-            const user = await User.findOne({where: {id}})
+            const user = await User.findOne({
+                where: {id},
+                include: [{model: Comments}, {model:UserMemes}]
+            })
             return res.json({user})
         } catch (e) {
             next(ApiError.badRequest(e.message))

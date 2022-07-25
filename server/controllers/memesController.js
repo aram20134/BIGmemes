@@ -22,10 +22,10 @@ class MemesController {
     async delete(req, res, next) {
         try {
             const {id} = req.body
-            
             const {img} = await TheMemes.findOne({where: {id}})
             const meme = await TheMemes.destroy({where: {id}})
-            await UserMemes.destroy({where: {theMemeId: id}})
+            await UserMemes.destroy({where: {theMemeId: null}})
+            await Rating.destroy({where: {theMemeId: null}})
             fs.unlinkSync(path.resolve(__dirname, '..', 'static', img))
             return res.json(meme)
         } catch(e) {

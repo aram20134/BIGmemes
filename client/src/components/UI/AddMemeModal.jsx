@@ -41,9 +41,9 @@ const AddMemeModal = observer(({show, handleClick}) => {
     .then(res => {
       setLoad(true)
       setLoading(false)
-      getAllUser(user.user.id).then(m => user.setUserMemes(m))
       setTimeout(() => {
         handleClick()
+        getAllUser(user.user.id).then(m => user.setUserMemes(m)).finally(() => console.log(user.userMemes))
       }, 1000);
     })
     .catch((e) => {return setError(e.message), setLoading(false)})
