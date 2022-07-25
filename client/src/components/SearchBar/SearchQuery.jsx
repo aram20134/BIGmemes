@@ -21,9 +21,12 @@ export default function SearchQuery({data, setSearch}) {
         {data.users.length ? <h5>Users:</h5> : ''}
         {data.users.map((d) => 
             <NavLink className='SearchQuery__link' onClick={() => setSearch(false)} key={d.id} to={`../profile/` + d.name}>
-                <Button className='SearchQuery__link' variant='outline-primary' >
-                    <div>{d.name}</div>
-                    <div>Memes: {d.user_memes.length}</div>
+                <Button className='SearchQuery__link user' variant='outline-primary' >
+                    <img src={`${process.env.REACT_APP_API_URL}/${d.avatar}`} />
+                    <div>
+                        <div>{d.name}</div>
+                        <div>Memes: {d.user_memes.length}</div>
+                    </div>
                 </Button>
             </NavLink>
         )}

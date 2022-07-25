@@ -20,6 +20,8 @@ import LoadingPage from "../components/UI/LoadingPage";
 import AvatarEditor from 'react-avatar-editor'
 import { useMemes } from './../hooks/useMemes';
 import SuperWord from './../components/UI/SuperWord';
+import upload from '../static/upload.png'
+import AvatarModal from "../components/UI/AvatarModal";
 
 const Profile = observer(() => {
   const { user } = useContext(Context);
@@ -36,6 +38,7 @@ const Profile = observer(() => {
   const [changed, setChanged] = useState(toJS(user.user.name))
   const [error, setError] = useState(false);
   const [show, setShow] = useState(false);
+  const [showAvatar, setShowAvatar] = useState(false)
   const [userData, setUserData] = useState({});
   const [userMemes, setUserMemes] = useState();
 
@@ -94,6 +97,10 @@ const Profile = observer(() => {
         <div style={{display:'flex', flexDirection:'row', gap:'50px'}}>
           <div className="Profile__user__cont">
             <img className="Profile__user__avatar" src={`${process.env.REACT_APP_API_URL}/${user.user.avatar}`}/>
+            <OverlayTrigger placement="top" overlay={<Tooltip style={{position:'absolute'}}>change your avatar</Tooltip>}>
+              <img onClick={() => setShowAvatar(true)} src={change} style={{position:'absolute', cursor:'pointer' ,bottom:'-20px', right:'-15px'}} />
+            </OverlayTrigger>
+            <AvatarModal show={showAvatar} handleClick={() => setShowAvatar(!showAvatar)} />
           </div>
           <div className="Profile__user__about">
           {!isChange 
@@ -117,7 +124,7 @@ const Profile = observer(() => {
           </div>
         </div>
         <div className="Profile__user__change">
-          <div onClick={() => setShow(!show)} className="Navbar__signIn">Add your meme</div>
+          <div onClick={() => setShow(!show)} className="Navbar__signIn"><img src={upload} />Add your meme</div>
           <AddMemeModal show={show} handleClick={() => setShow(!show)} />
         </div>
         <OverlayTrigger placement="top" overlay={<Tooltip style={{position:'absolute'}}>logout</Tooltip>}>

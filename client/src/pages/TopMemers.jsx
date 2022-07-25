@@ -81,7 +81,7 @@ export default function TopMemers() {
                return (
                 <tr key={u.id}>
                     <td>{i}</td>
-                    <td><NavLink to={`../profile/` + u.name}><Image src={`${process.env.REACT_APP_API_URL}/${u.avatar}`} />{u.name}</NavLink></td>
+                    <td><NavLink to={`../profile/` + u.name}><Image style={{height:'40px', margin:'15px' ,width:'40px', borderRadius:'50%', objectFit:'cover'}} src={`${process.env.REACT_APP_API_URL}/${u.avatar}`} />{u.name}</NavLink></td>
                     <td>{u.user_memes.length}</td>
                     <td>{u.ratings.length}</td>
                 </tr>

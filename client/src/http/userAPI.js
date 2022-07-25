@@ -58,3 +58,12 @@ export const writeComment = async (text, userId, theMemeId) => {
     })
     return data
 }
+export const setAvatar = async (form, pbar, setPbar) => {
+    const {data} = await $authHost.post('api/user/setavatar', form, {
+        onUploadProgress: (progressEvent) => {
+            setPbar(Math.round((progressEvent.loaded * 100) / progressEvent.total))
+        },
+    })
+    
+    return data
+}

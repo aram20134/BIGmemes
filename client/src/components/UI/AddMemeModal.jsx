@@ -22,10 +22,13 @@ const AddMemeModal = observer(({show, handleClick}) => {
   useEffect(() => {
     setImg(null)
     setPreImg(null)
+    setLoad(false)
+    setError(false)
   }, [show])
   
   function loadMeme() {
     if (!img) {
+      setError('Meme not founded')
       return
     }
     const meme = new FormData()
